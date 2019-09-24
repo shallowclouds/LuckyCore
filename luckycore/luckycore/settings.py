@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'auths',
+    'luck',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +139,9 @@ STATICFILES_DIRS = [
 ]
 
 AUTH_URL = "https://api.recruit.cnss.ondev.cn/v2/users/token"
+
+MAX_SCORE = 1000
+
+RANDOM_MU = 50
+RANDOM_SIGMA = 200
+DEFAULT_PASSWORD = "hQ8gK2OLpr4IShzdwsNN"

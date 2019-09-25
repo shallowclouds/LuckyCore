@@ -1,55 +1,79 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}Login{% endblock %}
 
-{% block main %}
-    <div class="container">
+{% block head %}
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
 
-        <div class="row">
-            <span class="col-md-3"></span>
-            <div class="col-md-6">
-                <div class="card border-primary">
-                    <div class="card-header">
-                        CNSS Auth
-                    </div>
-                    <div class="card-body">
-                        {% for message in messages %}
-                            {% if message.tags == "error" %}
-                                <div class="alert alert-danger" role="alert">{{ message }}</div>
-                            {% elif message.tags == "info" %}
-                                <div class="alert alert-info" role="alert">{{ message }}</div>
-                            {% elif message.tags == "success" %}
-                                <div class="alert alert-success" role="alert">{{ message }}</div>
-                            {% elif message.tags == "warning" %}
-                                <div class="alert alert-warning" role="alert">{{ message }}</div>
-                            {% endif %}
-                        {% endfor %}
-                        <form class="form-horizontal" method="POST">
-                            {% csrf_token %}
-                            <div class="form-group row">
-{#                                <label for="userName" class="col-sm-3 control-label">Username:</label>#}
+        .container {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 40%;
+            left: 50%;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+    <div>
+        <img src="{% static '/img/background.png' %}"
+             style="filter: blur(15px); width: 100%; height: 100%; object-fit: cover">
+        <div class="container">
+            <div class="row">
+                <span class="col-md-3"></span>
+                <div class="col-md-6">
+                    <div class="card border-primary" style="box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.3);">
+                        <div class="card-header bg-transparent">
+                            CNSS Auth
+                        </div>
+                        <div class="card-body">
+                            {% for message in messages %}
+                                {% if message.tags == "error" %}
+                                    <div class="alert alert-danger" role="alert">{{ message }}</div>
+                                {% elif message.tags == "info" %}
+                                    <div class="alert alert-info" role="alert">{{ message }}</div>
+                                {% elif message.tags == "success" %}
+                                    <div class="alert alert-success" role="alert">{{ message }}</div>
+                                {% elif message.tags == "warning" %}
+                                    <div class="alert alert-warning" role="alert">{{ message }}</div>
+                                {% endif %}
+                            {% endfor %}
+                            <form class="form-horizontal" method="POST">
+                                {% csrf_token %}
+                                <div class="form-group row"
+                                style="display: flex; align-items: center;justify-content: flex-start;">
+                                <span class="col-md-3">username:</span>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control" id="userName" placeholder="username"
-                                           name="username">
+                                        name="username">
                                 </div>
                             </div>
-                            <div class="form-group row">
-{#                                <label for="Password" class="col-sm-3 control-label">Password:</label>#}
+                            <div class="form-group row"
+                                style="display: flex; align-items: center;justify-content: flex-start;">
+                                <span class="col-md-3">password:</span>
                                 <div class="col-sm-9">
                                     <input type="password" class="form-control" id="Password" placeholder="password"
-                                           name="password">
+                                        name="password">
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <div class="form-group row"
+                                class="display: flex; align-item: center;justify-content: flex-start;">
                                 <div class="col-sm-offset-9 col-sm-3">
                                     <button type="submit" class="btn btn-outline-primary">Login</button>
                                 </div>
                             </div>
-                        </form>
+                            </form>
+                        </div>
                     </div>
                 </div>
+                <span class="col-md-3"></span>
             </div>
-            <span class="col-md-3"></span>
         </div>
     </div>
 {% endblock %}

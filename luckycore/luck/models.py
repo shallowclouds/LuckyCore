@@ -13,6 +13,9 @@ class Flag(models.Model):
     flag = models.CharField("flag", max_length=200, default=generate_user_id)
     need_score = models.IntegerField("need_score", default=1000)
 
+    def __str__(self):
+        return str(self.flag)
+
 
 class OpRecord(models.Model):
 
@@ -31,11 +34,17 @@ class OpRecord(models.Model):
             delta_score = score
         return delta_score
 
+    def __str__(self):
+        return str(self.by_user) + " to " + str(self.for_user)
+
 
 class Activity(models.Model):
 
     id = models.AutoField("id", primary_key=True)
     time_gap = models.DurationField("time_gap", default=datetime.timedelta(days=1))
     name = models.CharField("name", max_length=100, default="You are the one chosen by the God!")
-    info = models.CharField("info", max_length=500, default="prove you are lucky enough and you'll get a flag.")
+    info = models.CharField("info", max_length=1000, default="prove you are lucky enough and you'll get a flag.")
     max_score = models.IntegerField("max_score", default=settings.MAX_SCORE)
+
+    def __str__(self):
+        return str(self.name)

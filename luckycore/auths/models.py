@@ -25,6 +25,9 @@ class UserProfile(models.Model):
     user = models.OneToOneField(DjangoUser, on_delete=models.CASCADE)
     token = models.CharField("token", max_length=100, default="")
 
+    def __str__(self):
+        return str(self.user)
+
     def check_score(self):
         pass
 

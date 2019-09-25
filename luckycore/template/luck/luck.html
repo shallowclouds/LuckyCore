@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <style>
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .big-container {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            top: 40%;
+            left: 50%;
+        }
+
+        #logo:hover {
+            animation: rotation 0.6s infinite linear;
+        }
+
+        @keyframes rotation {
+            from {
+                transform: rotate(360deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        @media screen and (max-width: 360px) {
+            #logo {
+                width: 1.5em;
+                margin-bottom: -0.3em;
+                float: none;
+            }
+        }
+
+    </style>
+{% endblock %}
+
+{% block title %} Luck Core | {{ user.username }} {% endblock %}
+
+{% block main %}
+    <div>
+        <img src="{% static '/img/background.png' %}"
+                 style="filter: blur(15px); width: 100%; height: 100%; object-fit: cover">
+        <div class="container big-container">
+            <div class="row">
+                <span class="col-md-3"></span>
+                <div class="col-md-6">
+                    <div class="card" style="box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.3);">
+                            <div style="position: absolute; top: 0; right: 0;">
+                                <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" id="toast" data-delay="2000">
+                                  <div class="toast-header">
+                                    <strong class="mr-auto">Tip</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="toast-body">
+                                    分享链接已复制到剪贴板
+                                  </div>
+                                </div>
+                            </div>
+                            <div class="container">
+                                <div class="row">
+                                    <img src="{% static 'safari-pinned-tab.svg' %}"
+                                         id="logo"
+                                         class="col-sm-3 height: 100%; width: 100%;"
+                                         alt="misfortune">
+                                    <div class="col-sm-9 card-title" style="padding: 20px">
+                                        <strong>
+                                            {{ activity.name }}
+                                        </strong>
+                                        <p>
+                                            {% autoescape off %}
+                                                {{ activity.info }}
+                                            {% endautoescape %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                  <tbody>
+                                  {% for record in records %}
+                                      <tr>
+                                          <td>@{{ record.by_user }}</td>
+                                            <td>
+                                                {% if record.added_score >= 0 %}
+                                                    <span class="badge badge-success">
+                                                    +{{ record.added_score }} pt
+                                                {% else %}
+                                                    <span class="badge badge-danger">
+                                                    {{ record.added_score }} pt
+                                                {% endif %}
+                                                </span>
+                                            </td>
+                                          <td>{{ record.op_time }}</td>
+                                      </tr>
+                                  {% endfor %}
+                                  </tbody>
+                                </table>
+
+                                <div style="display: flex; justify-content: space-between;">
+                                    <h3 style="text-align: left; display: inline">
+                                        <span class="badge badge-dark">{{ userprofile.username }}</span>
+                                        <span class="badge badge-primary">{{ userprofile.score }} pt</span>
+                                    </h3>
+                                    <div style="text-align: right">
+                                        <button class="btn btn-outline-primary" id="share">Share</button>
+                                    </div>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar"
+                                         role="progressbar"
+                                         style="width: {% widthratio userprofile.score activity.max_score 100%}%"
+                                         aria-valuenow="{{ userprofile.score }}"
+                                         aria-valuemin="0"
+                                         aria-valuemax="{{ activity.max_score }}">
+                                    </div>
+                                </div>
+
+                            </div>
+                    </div>
+                </div>
+                <span class="col-md-3"></span>
+            </div>
+        </div>
+    </div>
+    <script>
+        const btn = document.querySelector('#share');
+        btn.addEventListener('click',() => {
+            const input = document.createElement('input');
+            document.body.appendChild(input);
+            input.setAttribute('value', window.location.href + '{{ userprofile.id }}/');
+            input.select();
+            if (document.execCommand('copy')) {
+                document.execCommand('copy');
+                $('#toast').toast('show');
+            }
+            document.body.removeChild(input);
+        })
+    </script>
+{% endblock %}

@@ -19,11 +19,11 @@ def dont_login(user):
 
 class LoginView(View):
 
-    @method_decorator(user_passes_test(dont_login, login_url="luck"))
+    @method_decorator(user_passes_test(dont_login, login_url="luck", redirect_field_name=""))
     def get(self, request):
         return render(request, "auths/login.html")
 
-    @method_decorator(user_passes_test(dont_login, login_url="luck"))
+    @method_decorator(user_passes_test(dont_login, login_url="luck", redirect_field_name=""))
     def post(self, request):
         if "username" in request.POST and "password" in request.POST:
             try:

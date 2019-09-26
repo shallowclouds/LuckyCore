@@ -19,7 +19,6 @@ def dont_login(user):
 
 class LoginView(View):
 
-    @method_decorator(user_passes_test(dont_login, login_url="luck", redirect_field_name=""))
     def get(self, request):
         return render(request, "auths/login.html")
 
@@ -40,7 +39,7 @@ class LoginView(View):
                     return HttpResponseRedirect(reverse("luck"))
                 else:
                     messages.warning(request, info)
-                    return render(request, "auths/login.html")
+                    return HttpResponseRedirect(reverse("login"))
             except DjangoUser.DoesNotExist:
                 user = DjangoUser(username=request.POST["username"], password=settings.DEFAULT_PASSWORD)
                 user_profile = UserProfile(user=user)
@@ -58,10 +57,10 @@ class LoginView(View):
                         return HttpResponseRedirect(reverse("luck"))
                     else:
                         messages.warning(request, "unknown error")
-                        return render(request, "auths/login.html")
+                        return HttpResponseRedirect(reverse("login"))
                 else:
                     messages.warning(request, info)
-                    return render(request, "auths/login.html")
+                    return HttpResponseRedirect(reverse("login"))
         else:
             messages.error(request, "unknown error")
-            return render(request, "auths/login.html")
+            return HttpResponseRedirect(reverse("login"))

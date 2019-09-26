@@ -4,17 +4,8 @@
 
 {% block head %}
     <style>
-        html,
-        body {
-            {#width: 100%;#}
-            {#height: 100%;#}
-        }
-
         .big-container {
-            position: absolute;
-            transform: translate(-50%, -50%);
-            top: 40%;
-            left: 50%;
+            margin: 20px auto;
         }
 
         #logo:hover {
@@ -46,7 +37,7 @@
 {% block main %}
     <div>
         <img src="{% static '/img/background.png' %}"
-                 style="filter: blur(15px); width: 100%; height: 100%; object-fit: cover">
+                 style="filter: blur(15px); position: fixed; width: 100%; object-fit: cover">
         <div class="container big-container">
             <div class="row">
                 <span class="col-md-3"></span>
@@ -84,6 +75,23 @@
                                 </div>
                             </div>
                             <div class="card-body">
+                                {% for message in messages %}
+                                    {% if message.tags == "error" %}
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    {% elif message.tags == "info" %}
+                                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                                    {% elif message.tags == "success" %}
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    {% elif message.tags == "warning" %}
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {% endif %}
+                                    {{ message }}
+
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                {% endfor %}
                                 <table class="table table-hover">
                                   <tbody>
                                   {% for record in records %}
@@ -111,6 +119,9 @@
                                         <span class="badge badge-primary">{{ userprofile.score }} pt</span>
                                     </h3>
                                     <div style="text-align: right">
+                                        {% if userprofile.score >= activity.max_score %}
+                                        <a href="{% url 'flag' %}" class="btn btn-outline-primary">兑换 flag</a>
+                                        {% endif %}
                                         <button class="btn btn-outline-primary" id="share">Share</button>
                                     </div>
                                 </div>
@@ -126,6 +137,7 @@
 
                             </div>
                     </div>
+
                 </div>
                 <span class="col-md-3"></span>
             </div>
@@ -136,7 +148,7 @@
         btn.addEventListener('click',() => {
             const input = document.createElement('input');
             document.body.appendChild(input);
-            input.setAttribute('value', window.location.href + '{{ userprofile.id }}/');
+            input.setAttribute('value', '{{ request.META.HTTP_HOST }}{% url 'share' userprofile.id %}');
             input.select();
             if (document.execCommand('copy')) {
                 document.execCommand('copy');

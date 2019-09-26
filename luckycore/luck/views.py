@@ -1,5 +1,5 @@
 from django.contrib import auth
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User as DjangoUser
 from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
@@ -68,5 +68,50 @@ class ShareView(View):
         return render(request, "luck/share.html", cxt)
 
     @method_decorator(login_required(login_url="login"))
-    def post(self, request):
-        return HttpResponse("QAQ, {} got a misfortune.".format(request.user.username))
+    def post(self, request, user_id):
+        cxt = dict()
+        try:
+            userprofile = UserProfile.objects.all().get(id=user_id)
+        except UserProfile.DoesNotExist:
+            return HttpResponseRedirect(reverse('error'))
+        records_query = OpRecord.objects.\
+            filter(for_user=userprofile.user, by_user=request.user).\
+            order_by('-op_time')
+        activity = Activity.objects.order_by("max_score")[0]
+        if len(records_query) == 0 or records_query[0].op_time + activity.time_gap < timezone.now():
+            if userprofile.score >= activity.max_score:
+                messages.info(
+                    request,
+                    "虽然 {} 的能量池快要溢出了，但要是让它散失了他会不高兴的=-=".format(userprofile.user.username)
+                )
+                return HttpResponseRedirect(reverse('share', args=(user_id, )))
+            new_record = OpRecord.objects.create(
+                activity=activity,
+                for_user=userprofile.user,
+                by_user=request.user,
+                added_score=0
+            )
+            for _ in range(3):
+                new_record.added_score = new_record.get_random_score(userprofile.score)
+                if new_record.added_score > 0:
+                    break
+            new_record.save()
+            userprofile.score = userprofile.score + new_record.added_score
+            userprofile.save()
+            messages.warning(request, "成功为 {username} 增加 {score} pt=-=".format(
+                username=userprofile.user.username,
+                score=new_record.added_score
+            ))
+            return HttpResponseRedirect(reverse('share', args=(user_id, )))
+        else:
+            messages.warning(request, "为 {} 注♂入能量的操作还在冷却中=-=".format(userprofile.user.username))
+            return HttpResponseRedirect(reverse('share', args=(user_id, )))
+
+
+def error_view(request):
+    return render(request, "luck/error.html")
+
+
+@login_required(login_url="login")
+def flag_view(request):
+    return HttpResponse("qaq")

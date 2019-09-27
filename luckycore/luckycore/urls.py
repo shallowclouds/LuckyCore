@@ -21,6 +21,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('lucky/', include("luck.urls")),
     path('login/', include("auths.urls")),
+    # django admin, str(base64.b64encode(b'admin')) * 2
+    path('YWRtaW4=YWRtaW4=/', admin.site.urls),
 ]
 
 # if in DEBUG mode, then add admin site for debug
@@ -29,4 +31,4 @@ if settings.DEBUG:
         settings.STATIC_URL,
         document_root=settings.STATIC_ROOT
         )
-    urlpatterns.append(path('admin/', admin.site.urls))
+    # urlpatterns.append(path('admin/', admin.site.urls))

@@ -1,4 +1,5 @@
 luckycore:
-  build: luckycore\
+  build: luckycore/
   volumes:
-    - ./luckycore.sock:/app/luckycore.sock
+    - "./tmp:/app/tmp"
+    - ./luckycore/static_files:/app/static_files

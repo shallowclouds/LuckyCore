@@ -90,7 +90,7 @@ class ShareView(View):
             )
             for _ in range(3):
                 new_record.added_score = new_record.get_random_score(userprofile.score)
-                if new_record.added_score > 0:
+                if new_record.added_score != 0:
                     break
             new_record.save()
             userprofile.score = userprofile.score + new_record.added_score

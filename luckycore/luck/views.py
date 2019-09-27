@@ -1,14 +1,11 @@
-from django.contrib import auth
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User as DjangoUser
 from .models import *
 from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views import View
 from django.contrib import messages
-from django.conf import settings
 
 
 class LuckView(View):
@@ -105,6 +102,10 @@ class ShareView(View):
             return HttpResponseRedirect(reverse('share', args=(user_id, )))
         else:
             messages.warning(request, "为 {} 注♂入能量的操作还在冷却中=-=".format(userprofile.user.username))
+            messages.info(
+                request,
+                "冷却时间剩余 {}".format(activity.time_gap - (timezone.now() - records_query[0].op_time))
+            )
             return HttpResponseRedirect(reverse('share', args=(user_id, )))
 
 
@@ -114,4 +115,9 @@ def error_view(request):
 
 @login_required(login_url="login")
 def flag_view(request):
-    return HttpResponse("qaq")
+    flag_query = Flag.objects.all().filter(need_score__lte=request.user.userprofile.score)
+    if len(flag_query) <= 0:
+        messages.info(request, "{} 还没有可以兑换的 flag QAQ".format(request.user.username))
+        return HttpResponseRedirect(reverse('luck'))
+    flags = [flag.flag for flag in flag_query]
+    return render(request, "luck/flag.html", dict(flags=flags))

@@ -1,0 +1,5 @@
+luckycore:
+  build: luckycore/
+  volumes:
+    - "./tmp:/app/tmp"
+    - "./luckycore/static_files:/app/static_files"

@@ -108,3 +108,4 @@ venv.bak/
 
 # django
 migrations
+static_files

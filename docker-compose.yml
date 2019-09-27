@@ -1,0 +1,4 @@
+luckycore:
+  build: luckycore\
+  volumes:
+    - ./luckycore.sock:/app/luckycore.sock

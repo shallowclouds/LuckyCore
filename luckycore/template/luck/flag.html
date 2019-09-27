@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block head %}
+    <style>
+        .big-container {
+            margin: 20px auto;
+        }
+
+    </style>
+{% endblock %}
+
+{% block title %} Luck Core | {{ user.username }} {% endblock %}
+
+{% block main %}
+    <div>
+        <img src="{% static '/img/background.png' %}"
+                 style="filter: blur(15px); position: fixed; width: 100%; object-fit: cover">
+        <div class="container big-container">
+            <div class="row">
+                <span class="col-md-3"></span>
+                <div class="col-md-6">
+                    <div class="card" style="box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.3);">
+                            <div class="container">
+                                <div class="row">
+                                    <img src="{% static 'img/umaru0.jpg' %}"
+                                         id="logo"
+                                         class="col-sm-3 height: 100%; width: 100%;"
+                                         alt="misfortune">
+                                    <div class="col-sm-9 card-title" style="padding: 20px;">
+                                        <strong>
+                                            Congratulations! Luck of The Sea
+                                        </strong>
+                                        <p>
+                                            I tried for ages to find a pair of blue suede shoes, but didn't have any luck.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                {% for flag in flags %}
+                                <div class="p-3 mb-2 bg-secondary text-white text-center shadow-lg rounded">
+                                    <h3 class="text-monospace" >{{ flag }}</h3>
+                                </div>
+                                {% endfor %}
+                                <div style="display: flex; justify-content: space-between;">
+                                    <div style="text-align: right">
+                                        <a href="{% url 'luck' %}" class="btn btn-outline-primary">Back</a>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+
+                </div>
+                <span class="col-md-3"></span>
+            </div>
+        </div>
+    </div>
+{% endblock %}

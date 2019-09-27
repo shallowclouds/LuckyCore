@@ -32,7 +32,7 @@ class OpRecord(models.Model):
             delta_score = self.activity.max_score - score
         if score + delta_score < 0:
             delta_score = score
-        return delta_score
+        return int(delta_score)
 
     def __str__(self):
         return str(self.by_user) + " to " + str(self.for_user)

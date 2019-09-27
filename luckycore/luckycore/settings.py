@@ -132,7 +132,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-STATIC_ROOT = "/var/www/luckycore/static/"
+STATIC_ROOT = "static_files/"
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

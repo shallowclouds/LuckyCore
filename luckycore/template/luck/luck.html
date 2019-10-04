@@ -63,9 +63,9 @@
                                          class="col-sm-3 height: 100%; width: 100%;"
                                          alt="misfortune">
                                     <div class="col-sm-9 card-title" style="padding: 20px">
-                                        <strong>
+                                        <h3>
                                             {{ activity.name }}
-                                        </strong>
+                                        </h3>
                                         <p>
                                             {% autoescape off %}
                                                 {{ activity.info }}
@@ -92,7 +92,7 @@
                                       </button>
                                     </div>
                                 {% endfor %}
-                                <table class="table table-hover">
+                                <table class="table table-hover table-striped">
                                   <tbody>
                                   {% for record in records %}
                                       <tr>
@@ -112,7 +112,6 @@
                                   {% endfor %}
                                   </tbody>
                                 </table>
-
                                 <div style="display: flex; justify-content: space-between;">
                                     <h3 style="text-align: left; display: inline">
                                         <span class="badge badge-dark">{{ userprofile.username }}</span>

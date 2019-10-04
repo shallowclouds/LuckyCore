@@ -32,12 +32,12 @@
     </style>
 {% endblock %}
 
-{% block title %} Luck Core | {{ user.username }} {% endblock %}
+{% block title %} Luck Core | {{ userprofile.username }} {% endblock %}
 
 {% block main %}
     <div>
         <img src="{% static '/img/background.png' %}"
-                 style="filter: blur(15px); position: fixed; width: 100%; object-fit: cover">
+                 style="filter: blur(10px); position: fixed; width: 100%; object-fit: cover">
         <div class="container big-container">
             <div class="row">
                 <span class="col-md-3"></span>
@@ -63,9 +63,9 @@
                                          class="col-sm-3 height: 100%; width: 100%;"
                                          alt="misfortune">
                                     <div class="col-sm-9 card-title" style="padding: 20px">
-                                        <strong>
+                                        <h3>
                                             {{ activity.name }}
-                                        </strong>
+                                        </h3>
                                         <p>
                                             {% autoescape off %}
                                                 {{ activity.info }}
@@ -91,15 +91,16 @@
                                   </button>
                                 </div>
                                 {% endfor %}
-                                <table class="table table-hover">
+                                <table class="table table-hover table-striped">
                                   <tbody>
                                   {% for record in records %}
                                       {% if record.by_user == user.username %}
-                                          <tr class="table-success">
+                                          <tr>
+                                              <td>@<strong>{{ record.by_user }}</strong></td>
                                       {% else %}
                                           <tr>
-                                      {% endif %}
                                           <td>@{{ record.by_user }}</td>
+                                      {% endif %}
                                             <td>
                                                 {% if record.added_score >= 0 %}
                                                     <span class="badge badge-success">
@@ -122,7 +123,7 @@
                                         <span class="badge badge-primary">{{ userprofile.score }} pt</span>
                                     </h3>
                                     <div style="text-align: right">
-                                        <a href="{% url 'luck' %}" class="btn btn-outline-primary">我的呢</a>
+                                        <a href="{% url 'luck' %}" class="btn btn-outline-primary">续我</a>
                                         <button class="btn btn-outline-primary" id="share">Share</button>
                                         {% if user.username != userprofile.username %}
                                             <form class="form-horizontal" method="POST" style="display: inline;">

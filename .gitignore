@@ -109,3 +109,4 @@ venv.bak/
 # django
 migrations
 static_files
+db.sqlite3

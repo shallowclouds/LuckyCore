@@ -1,35 +1,64 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Auth Login{% endblock %}
 
 {% block head %}
     <style>
-        html,
-        body {
-            width: 100%;
-            height: 100%;
-        }
 
-        .container {
+        .big-container {
             position: absolute;
             transform: translate(-50%, -50%);
             top: 40%;
             left: 50%;
+        }
+
+        #logo:hover {
+            animation: rotation 0.6s infinite linear;
+        }
+
+        @keyframes rotation {
+            from {
+                transform: rotate(360deg);
+            }
+            to {
+                transform: rotate(0deg);
+            }
+        }
+
+        @media screen and (max-width: 360px) {
+            #logo {
+                width: 1.5em;
+                margin-bottom: -0.3em;
+                float: none;
+            }
         }
     </style>
 {% endblock %}
 
 {% block main %}
     <div>
-        <img src="{% static '/img/background.png' %}"
-             style="filter: blur(15px); width: 100%; height: 100%; object-fit: cover">
-        <div class="container">
+        <div>
+            <img src="{% static '/img/background.png' %}"
+                 style="transform: scale(1.1); filter: blur(15px) brightness(0.9);
+                 width: 100%; height: 100%; object-fit: cover;
+                 vertical-align: middle;
+                ">
+        </div>
+        <div class="big-container container">
             <div class="row">
-                <span class="col-md-3"></span>
-                <div class="col-md-6">
-                    <div class="card border-primary" style="box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.3);">
-                        <div class="card-header bg-transparent">
+                <span class="col-md-5"></span>
+                <img src="{% static 'safari-pinned-tab.svg' %}"
+                                         id="logo"
+                                         class="col-sm-2 height: 100%; width: 100%;"
+                                         alt="misfortune">
+                <span class="col-md-5"></span>
+            </div>
+            <div class="row">
+                <span class="col-md-4"></span>
+                <div class="col-md-4">
+                    <div class="card" style="box-shadow: 0 0 30px 3px rgba(0, 0, 0, 0.3);">
+                        <div class="card-header bg-transparent text-center">
                             CNSS Auth
                         </div>
                         <div class="card-body">
@@ -44,35 +73,26 @@
                                     <div class="alert alert-warning" role="alert">{{ message }}</div>
                                 {% endif %}
                             {% endfor %}
-                            <form class="form-horizontal" method="POST">
+                            <form method="POST">
                                 {% csrf_token %}
-                                <div class="form-group row"
-                                style="display: flex; align-items: center;justify-content: flex-start;">
-                                <span class="col-md-3">username:</span>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" id="userName" placeholder="username"
-                                        name="username">
+                                <div class="form-group">
+                                    <label for="Username">Username</label>
+                                    <input type="text" class="form-control" id="Username" name="username" required>
                                 </div>
-                            </div>
-                            <div class="form-group row"
-                                style="display: flex; align-items: center;justify-content: flex-start;">
-                                <span class="col-md-3">password:</span>
-                                <div class="col-sm-9">
-                                    <input type="password" class="form-control" id="Password" placeholder="password"
-                                        name="password">
+                                <div class="form-group">
+                                    <label for="Password">Password</label>
+                                    <input type="password" class="form-control" id="Password" name="password" required>
                                 </div>
-                            </div>
-                            <div class="form-group row"
-                                class="display: flex; align-item: center;justify-content: flex-start;">
-                                <div class="col-sm-offset-9 col-sm-3">
-                                    <button type="submit" class="btn btn-outline-primary">Login</button>
+                                <div class="form-group">
+                                    <div>
+                                        <button type="submit" class="btn btn-outline-primary">Sign in</button>
+                                    </div>
                                 </div>
-                            </div>
                             </form>
                         </div>
                     </div>
                 </div>
-                <span class="col-md-3"></span>
+                <span class="col-md-4"></span>
             </div>
         </div>
     </div>

@@ -142,6 +142,6 @@ AUTH_URL = "https://api.recruit.cnss.ondev.cn/v2/users/token"
 
 MAX_SCORE = 1000
 
-RANDOM_MU = 50
-RANDOM_SIGMA = 200
+RANDOM_MU = 100
+RANDOM_SIGMA = 180
 DEFAULT_PASSWORD = "hQ8gK2OLpr4IShzdwsNN"

@@ -10,7 +10,7 @@ from django.contrib import messages
 
 class LuckView(View):
 
-    @method_decorator(login_required(login_url="login"))
+    @method_decorator(login_required(login_url="login", redirect_field_name=""))
     def get(self, request):
         cxt = dict()
         userprofile = request.user.userprofile
@@ -32,14 +32,14 @@ class LuckView(View):
         cxt = dict(userprofile=userprofile, records=records, activity=activity)
         return render(request, "luck/luck.html", cxt)
 
-    @method_decorator(login_required(login_url="login"))
+    @method_decorator(login_required(login_url="login", redirect_field_name=""))
     def post(self, request):
         return HttpResponse("qaq, {} got a misfortune.".format(request.user.username))
 
 
 class ShareView(View):
 
-    @method_decorator(login_required(login_url="login"))
+    @method_decorator(login_required(login_url="login", redirect_field_name=""))
     def get(self, request, user_id):
         cxt = dict()
         try:
@@ -64,7 +64,7 @@ class ShareView(View):
         cxt = dict(userprofile=userprofile, records=records, activity=activity)
         return render(request, "luck/share.html", cxt)
 
-    @method_decorator(login_required(login_url="login"))
+    @method_decorator(login_required(login_url="login", redirect_field_name=""))
     def post(self, request, user_id):
         cxt = dict()
         try:
@@ -77,9 +77,9 @@ class ShareView(View):
         activity = Activity.objects.order_by("max_score")[0]
         if len(records_query) == 0 or records_query[0].op_time + activity.time_gap < timezone.now():
             if userprofile.score >= activity.max_score:
-                messages.info(
+                messages.warning(
                     request,
-                    "虽然 {} 的能量池快要溢出了，但要是让它散失了他会不高兴的=-=".format(userprofile.user.username)
+                    "等等，你要反续 {}？".format(userprofile.user.username)
                 )
                 return HttpResponseRedirect(reverse('share', args=(user_id, )))
             new_record = OpRecord.objects.create(
@@ -95,16 +95,18 @@ class ShareView(View):
             new_record.save()
             userprofile.score = userprofile.score + new_record.added_score
             userprofile.save()
-            messages.warning(request, "成功为 {username} 增加 {score} pt=-=".format(
+            messages.info(request, "成功为 {username} 续了 {score} pt".format(
                 username=userprofile.user.username,
                 score=new_record.added_score
             ))
             return HttpResponseRedirect(reverse('share', args=(user_id, )))
         else:
-            messages.warning(request, "为 {} 注♂入能量的操作还在冷却中=-=".format(userprofile.user.username))
+            messages.warning(request, "为 {} 注♂入能量的操作还在冷却中，慢点续".format(userprofile.user.username))
+            cool_down_time = activity.time_gap - (timezone.now() - records_query[0].op_time)
+            cool_down_time = str(cool_down_time).split('.')[0]
             messages.info(
                 request,
-                "冷却时间剩余 {}".format(activity.time_gap - (timezone.now() - records_query[0].op_time))
+                "冷却时间剩余: {}".format(cool_down_time)
             )
             return HttpResponseRedirect(reverse('share', args=(user_id, )))
 
@@ -113,7 +115,7 @@ def error_view(request):
     return render(request, "luck/error.html")
 
 
-@login_required(login_url="login")
+@login_required(login_url="login", redirect_field_name="")
 def flag_view(request):
     flag_query = Flag.objects.all().filter(need_score__lte=request.user.userprofile.score)
     if len(flag_query) <= 0:

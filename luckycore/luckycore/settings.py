@@ -138,7 +138,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-AUTH_URL = "https://api.recruit.cnss.ondev.cn/v2/users/token"
+AUTH_URL = "https://recruit.cnss.io/v2/users/token"
 
 MAX_SCORE = 1000
 

@@ -142,6 +142,6 @@ AUTH_URL = "https://recruit.cnss.io/v2/users/token"
 
 MAX_SCORE = 1000
 
-RANDOM_MU = 100
+RANDOM_MU = 150
 RANDOM_SIGMA = 180
 DEFAULT_PASSWORD = "hQ8gK2OLpr4IShzdwsNN"

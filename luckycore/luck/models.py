@@ -27,7 +27,8 @@ class OpRecord(models.Model):
     op_time = models.DateTimeField("op_time", default=timezone.now)
 
     def get_random_score(self, score=0):
-        delta_score = int(random.normalvariate(settings.RANDOM_MU, settings.RANDOM_SIGMA))
+        MU = (1000 - score) * settings.RANDOM_MU / 1000
+        delta_score = int(random.normalvariate(MU, settings.RANDOM_SIGMA))
         if score + delta_score > self.activity.max_score:
             delta_score = self.activity.max_score - score
         if score + delta_score < 0:

@@ -81,7 +81,7 @@ class ShareView(View):
                     request,
                     "等等，你要反续 {}？".format(userprofile.user.username)
                 )
-                return HttpResponseRedirect(reverse('share', args=(user_id, )))
+                # return HttpResponseRedirect(reverse('share', args=(user_id, )))
             new_record = OpRecord.objects.create(
                 activity=activity,
                 for_user=userprofile.user,

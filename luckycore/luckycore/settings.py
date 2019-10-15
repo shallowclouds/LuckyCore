@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'd_dptfx%5f3dp!wmrzixjzuw39vm+mn-ml1e8#8_@c+e7_2r(2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -138,10 +138,11 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
-AUTH_URL = "https://api.recruit.cnss.ondev.cn/v2/users/token"
+# AUTH_URL = "https://recruit.cnss.io/v2/users/token"
+AUTH_URL = "http://10a7ae25c0ac46919823d51473c7217b-cn-shenzhen.alicloudapi.com/v2/users/token"
 
 MAX_SCORE = 1000
 
-RANDOM_MU = 100
+RANDOM_MU = 150
 RANDOM_SIGMA = 180
 DEFAULT_PASSWORD = "hQ8gK2OLpr4IShzdwsNN"
